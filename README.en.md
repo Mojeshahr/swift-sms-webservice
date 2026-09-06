@@ -48,6 +48,19 @@ There is a sandbox server that answers exactly like production but sends no
 message and spends no credit. Swap `V3` for `V3SandBox` in the URL. The one
 exception is `TokenList`, which the sandbox does not implement.
 
+## iOS and the account key
+
+Do not put the key inside the app. Any string shipped in an app bundle can be
+extracted, and whoever extracts it sends SMS on your credit. Not in code, not
+in `Info.plist`, and not in a Keychain entry the app itself filled.
+
+It belongs on your own backend. The app asks your server to "send a code to
+this user", your server decides and calls this service with its own key.
+
+The examples here read the key from an environment variable, which is right for
+macOS, Linux and Vapor. An iOS app has no environment variables: the shape of
+the request is the same, but the caller should be your server, not the app.
+
 ## The methods
 
 | Example | Method | What it does |
